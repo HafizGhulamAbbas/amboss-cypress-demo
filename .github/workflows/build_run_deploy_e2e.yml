@@ -1,7 +1,7 @@
 name: Deploy and run
 on:
   push:
-    branches: master
+    branches: main
   workflow_dispatch:
 jobs:
   Deploy:
@@ -29,9 +29,9 @@ jobs:
           docker push ghcr.io/${{ env.REPO_NAME }}:${{env.BRANCH_NAME}}-latest
       - name: Run tests
         run: |
-          docker run --rm -v $(pwd)/cypress/videos:/cypress/videos -v $(pwd)/cypress/screenshots:/cypress/screenshots ghcr.io/${{ env.REPO_NAME }}:${{env.BRANCH_NAME}}-${{ github.run_id }} cypress.json
+          docker run --rm -v $(pwd)/cypress/videos:/cypress/videos -v $(pwd)/cypress/screenshots:/cypress/screenshots ghcr.io/${{ env.REPO_NAME }}:${{env.BRANCH_NAME}}-${{ github.run_id }} cypress.config.ts
       - name: Save artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@main
         with:
           name: artifacts for ${{env.BRANCH_NAME}}-${{ github.run_id }}
           path: |
